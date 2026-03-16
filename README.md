@@ -9,5 +9,8 @@ You can install the GreenTips CLI directly from this GitHub repository using `pi
 
 ## Usage
 
-Type the following command into your terminal:
-`greentips`
+Type the following command into your terminal for the daily sustainability tip:
+`greentips daily`
+
+If you would like to analyze a file for more specific tips:
+`greentips analyze <FILEPATH>`

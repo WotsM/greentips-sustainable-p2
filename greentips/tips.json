@@ -177,7 +177,7 @@
     "source": "Green Software Foundation - Energy Efficiency",
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/"
-    ]
+    ],
     "future_static_analysis": {
       "detectable": true,
       "pattern": "API calls or ORM queries inside loops; N+1 access patterns",
@@ -640,7 +640,7 @@
     "effort": "medium",
     "tags": ["serverless", "cloud", "lambda", "scale-to-zero", "idle"],
     "source": ["JCSRR — 'Energy-efficient Data Engineering Practices for Big Data' (2025)"],
-    "sourceLink": ["https://jcsrr.org/index.php/jcsrr/article/download/27/35/231"]
+    "sourceLink": ["https://jcsrr.org/index.php/jcsrr/article/download/27/35/231"],
     "future_static_analysis": {
       "detectable": false,
       "notes": "Architectural tip; applicable when reviewing always-on service configurations"
@@ -659,12 +659,12 @@
     "source": [
 	    "E-SPIN Group — 'Green Coding: Writing Energy-Efficient Software' (2025)", 
 	    "Apple - Energy Efficiency Guide for iOS Apps; Android — Background Work Best Practices"
-	   ]
+	   ],
     "sourceLink": [
 	    "https://www.e-spincorp.com/green-coding-energy-efficient-software/", 
 	    "https://developer.apple.com/library/archive/documentation/Performance/Conceptual/EnergyGuide-iOS/", 
 	    "https://developer.android.com/develop/background-work"
-	   ]
+	   ],
     "future_static_analysis": {
       "detectable": true,
       "pattern": "CLLocationManager continuous updates / LocationManager.requestLocationUpdates with small interval",
@@ -914,7 +914,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["cdn", "network", "static-assets", "bandwidth", "latency"],
-    ""source": [
+    "source": [
 		  "DigitalOcean — Using a CDN to Speed Up Static Content Delivery",
 		  "Whizlabs — Host and Optimize Static Website with Content Delivery Network"
 		],
