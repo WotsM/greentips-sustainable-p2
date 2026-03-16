@@ -1,0 +1,1229 @@
+[
+  {
+    "id": "001",
+    "title": "Prefer lower algorithmic complexity",
+    "tip": "When choosing between algorithms, always consider time complexity. Replacing an O(n²) algorithm with an O(n log n) alternative doesn't just improve speed - it directly reduces CPU cycles and therefore energy consumption.",
+    "why": "CPU energy consumption scales with the number of operations performed. More efficient algorithms generally do less work for the same result, which reduces energy use.",
+    "category": "computation",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["algorithms", "complexity", "cpu", "performance"],
+    "source": "Green Software Foundation - Energy Efficiency; IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "sourceLink": [
+      "https://learn.greensoftware.foundation/energy-efficiency/",
+      "https://spectrum.ieee.org/green-software"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "nested loops over same collection (O(n²) smell)",
+      "languages": ["python", "javascript", "java", "kotlin", "swift"]
+    }
+  },
+  {
+    "id": "002",
+    "title": "Use lazy evaluation instead of eager computation",
+    "tip": "Avoid computing values until they are actually needed. In Python, prefer generators over lists for large sequences. In Kotlin/Swift, use sequences or lazy collections instead of eager maps and filters.",
+    "why": "Eager computation wastes CPU cycles and memory on values that may never be consumed. Lazy evaluation defers work until needed, and sometimes eliminates it entirely.",
+    "category": "computation",
+    "language": ["python", "kotlin", "swift", "javascript", "general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["lazy", "generators", "sequences", "memory", "cpu"],
+    "source": "Green Software Foundation - Energy Efficiency; Roskilde University - Energy-Aware Software Engineering",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/",
+        "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "list comprehension or .toList() followed by immediate single iteration without reuse",
+      "languages": ["python", "kotlin", "swift"]
+    }
+  },
+  {
+    "id": "003",
+    "title": "Choose the right data structure for the operation",
+    "tip": "Use HashSet or HashMap for membership checks instead of List or Array when lookup speed matters. Use arrays for sequential access and choose data structures based on access patterns, not habit.",
+    "why": "The wrong data structure causes unnecessary CPU work and memory overhead. Better-matched data structures can significantly reduce energy consumption for the same workload.",
+    "category": "computation",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["data-structures", "collections", "cpu", "memory"],
+    "source": "Michanan et al. - Predicting Data Structures for Energy Efficient Computing, IEEE IGSC 2015",
+    "sourceLink": [
+        "https://cs.du.edu/~rdewri/data/MyPapers/Conferences/2015IGSC.pdf"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "list.contains() inside a loop; repeated membership checks on list-like structures",
+      "languages": ["python", "java", "kotlin", "javascript"]
+    }
+  },
+  {
+    "id": "004",
+    "title": "Minimize data movement between memory layers",
+    "tip": "Structure your data so that items accessed together are stored close together in memory. Prefer sequential array access over scattered random access when possible.",
+    "why": "Moving data through the memory hierarchy costs energy. Better cache locality reduces expensive memory accesses and improves overall efficiency.",
+    "category": "memory",
+    "language": ["c", "cpp", "rust", "general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["cache", "memory-hierarchy", "data-locality", "cpu"],
+    "source": "Roskilde University - Energy-Aware Software Engineering",
+    "sourceLink": [
+        "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Usually requires runtime profiling; limited static detection possible for struct layout or strided access patterns"
+    }
+  },
+  {
+    "id": "005",
+    "title": "Eliminate redundant computations by caching results",
+    "tip": "Cache the results of expensive deterministic function calls instead of recomputing them. Use memoization for recursive functions or repeated calculations with the same inputs.",
+    "why": "Repeatedly performing the same work wastes CPU cycles and energy. Caching can drastically reduce total computation for identical or overlapping subproblems.",
+    "category": "computation",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["memoization", "caching", "redundancy", "cpu"],
+    "source": "Green Software Foundation - Energy Efficiency; IEEE Computer Society - The Environmental Cost of Code",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/",
+        "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "same expensive function called multiple times with identical arguments in a loop or branch chain",
+      "languages": ["python", "javascript", "java", "kotlin"]
+    }
+  },
+  {
+    "id": "006",
+    "title": "Prefer event-driven over polling",
+    "tip": "Replace busy-wait loops and repeated polling with event-driven or interrupt-based approaches. Use callbacks, promises, async/await, or OS-level listeners instead of periodic checking when feasible.",
+    "why": "Polling keeps CPUs active unnecessarily and prevents longer idle periods. Event-driven designs allow systems to sleep until useful work actually arrives.",
+    "category": "energy",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["polling", "event-driven", "cpu-idle", "sleep-states", "async"],
+    "source": "Green Software Foundation - Energy Efficiency; Roskilde University - Energy-Aware Software Engineering",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/",
+        "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "while(true) or for(;;) loop with sleep() and repeated condition or resource checks",
+      "languages": ["python", "java", "kotlin", "javascript", "swift"]
+    }
+  },
+  {
+    "id": "007",
+    "title": "Batch I/O operations",
+    "tip": "Group many small disk, database, or network writes into fewer larger operations. Avoid writing one record at a time in a loop when batching is possible.",
+    "why": "Each I/O operation has fixed overhead. Batching amortizes that overhead across more useful work, reducing system call, storage, and transfer costs.",
+    "category": "io",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["io", "disk", "batching", "writes", "buffering"],
+    "source": "Roskilde University - Energy-Aware Software Engineering; Green Software Foundation - Energy Efficiency",
+    "sourceLink": [
+        "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf",
+        "https://learn.greensoftware.foundation/energy-efficiency/"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "file.write(), db.insert(), or network send inside a loop without batching or buffering",
+      "languages": ["python", "java", "kotlin", "javascript"]
+    }
+  },
+  {
+    "id": "008",
+    "title": "Use compression to reduce data transfer energy",
+    "tip": "Enable compression for data stored on disk and transmitted over networks where appropriate. Prefer gzip, Brotli, zstd, or domain-appropriate compressed formats for large payloads.",
+    "why": "Transferring less data usually saves more energy than the CPU cost of compressing it, especially for repeated or large transfers.",
+    "category": "network",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["compression", "network", "io", "storage", "bandwidth"],
+    "source": "Green Software Foundation - Energy Efficiency; IEEE Computer Society - The Environmental Cost of Code",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/",
+        "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "large HTTP responses or file exports without compression settings or compressed formats",
+      "languages": ["python", "javascript", "java"]
+    }
+  },
+  {
+    "id": "009",
+    "title": "Reduce network round-trips",
+    "tip": "Minimize the number of HTTP or database requests. Combine multiple calls into batch requests, avoid N+1 query patterns, and fetch related data efficiently.",
+    "why": "Each round-trip has energy cost at both ends. Fewer requests reduce transmission, connection handling, serialization, and waiting overhead.",
+    "category": "network",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["network", "http", "api", "round-trips", "batching", "graphql"],
+    "source": "Green Software Foundation - Energy Efficiency",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/"
+    ]
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "API calls or ORM queries inside loops; N+1 access patterns",
+      "languages": ["python", "javascript", "java", "kotlin"]
+    }
+  },
+  {
+    "id": "010",
+    "title": "Fetch only the data you need",
+    "tip": "Use explicit field selection instead of SELECT *. Apply filters, pagination, and projections at the database or API layer rather than fetching everything and filtering later in application code.",
+    "why": "Fetching excess data wastes network bandwidth, memory, deserialization work, and CPU time. Precise queries reduce cost across the whole stack.",
+    "category": "database",
+    "language": ["sql", "general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["database", "sql", "query-optimization", "network", "memory"],
+    "source": "Green Software Foundation - Energy Efficiency",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "SELECT * in SQL strings; ORM queries without field projections",
+      "languages": ["python", "java", "kotlin", "javascript", "sql"]
+    }
+  },
+  {
+    "id": "011",
+    "title": "Implement caching for frequently accessed data",
+    "tip": "Use in-memory caches or distributed caches for frequently read, rarely changing data. Cache expensive query results or computed responses when correctness allows it.",
+    "why": "Serving from cache avoids repeated database calls, remote requests, and recomputation. That reduces both latency and energy consumption.",
+    "category": "energy",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["caching", "redis", "database", "network", "response-time"],
+    "source": "Green Software Foundation - Energy Efficiency; IEEE Computer Society - The Environmental Cost of Code",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/",
+        "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Mostly architectural; partial detection possible by spotting repeated identical queries in hot request paths"
+    }
+  },
+  {
+    "id": "012",
+    "title": "Use connection pooling for databases and HTTP",
+    "tip": "Reuse existing database and HTTP connections instead of creating a new one per request. Configure pool sizes to match your workload rather than using defaults blindly.",
+    "why": "New connections require setup work such as handshakes, authentication, and allocation. Pooling amortizes this overhead over many operations.",
+    "category": "network",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["connection-pooling", "database", "http", "network", "tcp"],
+    "source": "Green Software Foundation - Energy Efficiency; IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/",
+        "https://spectrum.ieee.org/green-software"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "new DB connection, session, or HTTP client created inside request handler or loop",
+      "languages": ["python", "java", "kotlin", "javascript"]
+    }
+  },
+  {
+    "id": "013",
+    "title": "Release resources explicitly and promptly",
+    "tip": "Close files, database connections, network streams, and timers as soon as they are no longer needed. Use context managers, try-with-resources, defer, or RAII-style patterns where available.",
+    "why": "Holding resources longer than necessary keeps memory and external resources occupied, increases pressure on cleanup mechanisms, and can degrade performance over time.",
+    "category": "memory",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["memory", "resource-management", "gc", "file-handles", "leaks"],
+    "source": "Green Software Foundation - Energy Efficiency; Roskilde University - Energy-Aware Software Engineering",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/energy-efficiency/",
+        "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "resource acquisition without corresponding close/free/dispose; unclosed stream or file handle",
+      "languages": ["java", "python", "kotlin", "swift", "cpp"]
+    }
+  },
+  {
+    "id": "014",
+    "title": "Prefer primitive types over boxed types in hot paths",
+    "tip": "In Java and Kotlin, prefer primitive types and primitive arrays in computation-heavy code when possible. In numerical Python workloads, prefer vectorized arrays over Python object-heavy lists.",
+    "why": "Boxed values and object-heavy containers increase allocation overhead, garbage collection pressure, and memory traffic. More compact representations are usually more efficient.",
+    "category": "memory",
+    "language": ["java", "kotlin", "python"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["boxing", "primitives", "jvm", "memory", "gc", "numpy"],
+    "source": "Kotlin Documentation - Arrays; Kotlin Documentation - Calling Java from Kotlin",
+    "sourceLink": [
+        "https://kotlinlang.org/docs/arrays.html",
+        "https://kotlinlang.org/docs/java-interop.html"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "Array<Int>, List<Integer>, or other boxed numeric collections used in performance-critical loops",
+      "languages": ["java", "kotlin"]
+    }
+  },
+  {
+    "id": "015",
+    "title": "Avoid creating unnecessary objects in hot paths",
+    "tip": "In inner loops and high-frequency request handlers, avoid allocating short-lived objects unless needed. Reuse buffers, builders, and preallocated structures where appropriate.",
+    "why": "Frequent allocation increases garbage collection work and memory churn, which adds CPU overhead and wasted energy.",
+    "category": "memory",
+    "language": ["java", "kotlin", "swift", "javascript", "python"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["gc", "allocation", "hot-path", "object-pooling", "performance"],
+    "source": "IEEE Computer Society - The Environmental Cost of Code; Green Software Foundation - Energy Efficiency",
+    "sourceLink": [
+        "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code",
+        "https://learn.greensoftware.foundation/energy-efficiency/"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "object creation or string concatenation inside tight loops or high-frequency handlers",
+      "languages": ["java", "kotlin", "javascript", "swift"]
+    }
+  },
+  {
+    "id": "016",
+    "title": "Use StringBuilder for string concatenation in loops",
+    "tip": "Avoid repeated string concatenation with + inside loops in Java, Kotlin, or C#. Use a mutable builder type such as StringBuilder instead.",
+    "why": "Repeated concatenation creates many temporary strings and unnecessary allocations. A single reusable buffer is far more efficient.",
+    "category": "memory",
+    "language": ["java", "kotlin", "csharp"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["string", "loop", "allocation", "gc", "performance"],
+    "source": "Oracle Java Programming Guidelines - Use StringBuilder to Concatenate Strings; Oracle Java String API",
+    "sourceLink": [
+        "https://docs.oracle.com/cd/E18930_01/html/821-2431/abebf.html",
+        "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "string += or repeated string + variable inside a for/while loop",
+      "languages": ["java", "kotlin", "csharp"]
+    }
+  },
+  {
+    "id": "017",
+    "title": "Parallelize independent tasks across cores",
+    "tip": "Use concurrency for independent CPU-bound tasks when the runtime and workload justify it. Distribute large pure computations across available cores rather than always processing them sequentially.",
+    "why": "Well-chosen parallelism can reduce elapsed time and improve throughput. For substantial workloads, that can also improve energy efficiency.",
+    "category": "computation",
+    "language": ["java", "kotlin", "python", "javascript", "general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["parallelism", "concurrency", "threads", "coroutines", "cpu"],
+    "source": "Roskilde University - Energy-Aware Software Engineering",
+    "sourceLink": [
+        "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Opportunity detection possible for large sequential loops that apply pure functions independently"
+    }
+  },
+  {
+    "id": "018",
+    "title": "Parallelize reads over writes in concurrent code",
+    "tip": "When designing concurrent algorithms, prioritize safe parallel read-heavy work before attempting to parallelize write-heavy shared-state updates.",
+    "why": "Read parallelism often scales with low coordination cost, while parallel writes can introduce locking, contention, retries, and extra energy overhead.",
+    "category": "computation",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "high",
+    "tags": ["concurrency", "parallelism", "reads", "writes", "synchronization"],
+    "source": "Roy et al. - Energy Aware Algorithmic Engineering, University at Buffalo",
+    "sourceLink": [
+        "https://cse.buffalo.edu/faculty/atri/papers/complexity/energy-engg.pdf"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Requires deeper concurrency and data-flow analysis"
+    }
+  },
+  {
+    "id": "019",
+    "title": "Use database indexes on frequently queried columns",
+    "tip": "Add indexes to columns frequently used in WHERE, JOIN, and ORDER BY clauses. Use query plans to validate that indexes are actually improving execution.",
+    "why": "Indexes reduce unnecessary scans and lower the CPU and I/O work needed to answer repeated queries.",
+    "category": "database",
+    "language": ["sql", "general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["database", "indexing", "sql", "query", "performance"],
+    "source": "IEEE Computer Society - The Environmental Cost of Code; Green Software Foundation - Energy Efficiency",
+    "sourceLink": [
+        "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code",
+        "https://learn.greensoftware.foundation/energy-efficiency/"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Usually needs schema introspection or query-plan analysis; ORM heuristics may provide warnings"
+    }
+  },
+  {
+    "id": "020",
+    "title": "Avoid loading entire files into memory",
+    "tip": "Process large files as streams or line-by-line rather than reading them fully into memory. Use streaming APIs whenever the full file is not genuinely needed at once.",
+    "why": "Streaming reduces peak memory usage, avoids unnecessary allocations, and prevents the extra overhead associated with processing oversized in-memory buffers.",
+    "category": "memory",
+    "language": ["java", "python", "javascript", "kotlin", "general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["streaming", "memory", "file-io", "large-files"],
+    "source": "Roskilde University - Energy-Aware Software Engineering",
+    "sourceLink": [
+        "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "File.readAllBytes(), Files.readString(), or open(...).read() without size guard or clear need",
+      "languages": ["java", "python", "kotlin", "javascript"]
+    }
+  },
+  {
+    "id": "021",
+    "title": "Avoid unnecessary logging in hot paths",
+    "tip": "Do not format and emit detailed logs inside tight loops, high-frequency callbacks, or per-item processing paths unless operationally necessary. Use sampling, aggregation, or log levels appropriately.",
+    "why": "Excessive logging adds string formatting, allocation, I/O, and storage work. In hot paths, that overhead can become a real performance and energy cost.",
+    "category": "io",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["logging", "io", "hot-path", "performance", "observability"],
+    "source": "Oracle Java Server Page and Servlet Tuning - Avoid System.out.println() calls; IEEE Computer Society - The Environmental Cost of Code",
+    "sourceLink": [
+        "https://docs.oracle.com/cd/E18930_01/html/821-2431/abebp.html",
+        "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "logger.debug/info/print inside tight loops or per-record processing without guard",
+      "languages": ["python", "java", "kotlin", "javascript", "swift"]
+    }
+  },
+  {
+    "id": "022",
+    "title": "Minimize JavaScript bundle size",
+    "tip": "Use tree-shaking, code splitting, and minification to reduce JavaScript bundle size. Import only what you need from libraries instead of whole namespaces.",
+    "why": "Smaller bundles require less transfer, parsing, compilation, and execution on user devices, which reduces both time and energy use.",
+    "category": "energy",
+    "language": ["javascript", "typescript"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["javascript", "bundle-size", "tree-shaking", "frontend", "parsing"],
+    "source": "IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "sourceLink": [
+        "https://spectrum.ieee.org/green-software"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "import * as lib or full-library default import when partial import is possible",
+      "languages": ["javascript", "typescript"]
+    }
+  },
+  {
+    "id": "023",
+    "title": "Use modern, efficient image formats",
+    "tip": "Prefer modern image formats such as WebP or AVIF where supported, and serve appropriately sized images for the display context.",
+    "why": "Images are often among the largest assets on a page. Smaller images reduce transfer size, decoding work, and rendering cost.",
+    "category": "network",
+    "language": ["html", "javascript", "general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["images", "webp", "avif", "web", "bandwidth", "frontend"],
+    "source": "IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "sourceLink": [
+        "https://spectrum.ieee.org/green-software"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "img tags referencing large .png or .jpg assets without responsive alternatives",
+      "languages": ["html", "javascript"]
+    }
+  },
+  {
+    "id": "024",
+    "title": "Load heavy assets only when visible",
+    "tip": "Use lazy loading for images, videos, iframes, and expensive animations so off-screen content is not fetched or rendered immediately.",
+    "why": "Loading assets before they are needed wastes bandwidth, parsing work, and rendering energy, especially on content-heavy pages.",
+    "category": "energy",
+    "language": ["javascript", "html"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["lazy-loading", "images", "animations", "viewport", "frontend", "bandwidth"],
+    "source": "MDN Web Docs - Lazy loading; web.dev - Browser-level image lazy loading for the web",
+    "sourceLink": [
+        "https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading",
+        "https://web.dev/browser-level-image-lazy-loading/"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "img or iframe tags without lazy loading; heavy assets initialized immediately on page load",
+      "languages": ["html", "javascript"]
+    }
+  },
+  {
+    "id": "025",
+    "title": "Use energy-aware dark mode on OLED displays",
+    "tip": "For OLED or AMOLED interfaces, prefer darker themes and avoid unnecessarily bright UI surfaces when design constraints allow it.",
+    "why": "Display power can be reduced on emissive screens when fewer bright pixels are shown. Interface color choices can therefore influence device energy use.",
+    "category": "energy",
+    "language": ["swift", "kotlin", "javascript", "general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["dark-mode", "oled", "display", "mobile", "ui", "color"],
+    "source": "Google Android Developers - Optimize watch faces (dark colors draw less power)",
+    "sourceLink": [
+        "https://developer.android.com/training/wearables/watch-faces/performance"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "dark theme palette uses bright or high-luminance surfaces throughout",
+      "languages": ["swift", "kotlin", "css"]
+    }
+  },
+  {
+    "id": "026",
+    "title": "Avoid auto-playing videos and animations",
+    "tip": "Do not auto-play videos or heavy animations unless there is a strong product reason. Respect reduced-motion preferences and defer playback until the user engages.",
+    "why": "Video decoding, animation, and media transfer can be expensive on both CPUs/GPUs and networks. Auto-play spends those resources without explicit user demand.",
+    "category": "energy",
+    "language": ["html", "css", "javascript"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["video", "autoplay", "animation", "frontend", "media", "accessibility"],
+    "source": "IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "sourceLink": [
+        "https://spectrum.ieee.org/green-software"
+    ],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "video autoplay or immediately-starting animation without user interaction or reduced-motion check",
+      "languages": ["html", "javascript", "css"]
+    }
+  },
+  {
+    "id": "027",
+    "title": "Use efficient serialization formats",
+    "tip": "For internal services and high-throughput APIs, consider binary serialization formats such as Protocol Buffers or MessagePack instead of verbose text formats when interoperability constraints allow it.",
+    "why": "Compact serialization can reduce payload size and parsing overhead, lowering both network and CPU costs.",
+    "category": "network",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "medium",
+    "tags": ["serialization", "protobuf", "json", "api", "bandwidth", "cpu"],
+    "source": "IEEE Computer Society - The Environmental Cost of Code",
+    "sourceLink": [
+        "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Usually architectural; could warn when internal microservice traffic uses large JSON payloads by default"
+    }
+  },
+  {
+    "id": "028",
+    "title": "Implement HTTP caching headers correctly",
+    "tip": "Set appropriate Cache-Control, ETag, and Last-Modified headers on cacheable responses and static assets so clients and CDNs can avoid redundant requests.",
+    "why": "A cache hit avoids repeated server work, repeated transfer, and repeated backend lookups for unchanged resources.",
+    "category": "network",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["http", "caching", "cdn", "headers", "api", "bandwidth"],
+    "source": "RFC 9111 - HTTP Caching",
+    "sourceLink": [
+        "https://datatracker.ietf.org/doc/rfc9111/"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Can be partially detected by inspecting API response configuration or framework middleware"
+    }
+  },
+  {
+    "id": "029",
+    "title": "Schedule batch jobs during low-carbon periods",
+    "tip": "Run non-urgent jobs such as CI builds, ML training, batch exports, and backfills when electricity is cleaner, using carbon-aware scheduling where possible.",
+    "why": "The same computation can cause different emissions depending on when it runs. Shifting flexible workloads to cleaner periods reduces carbon without changing the result.",
+    "category": "carbon-awareness",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["carbon-aware", "scheduling", "ci-cd", "cloud", "renewable-energy"],
+    "source": "Green Software Foundation - Carbon Awareness; Carbon Aware SDK Documentation; IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/carbon-awareness/",
+        "https://carbon-aware-sdk.greensoftware.foundation/docs/overview/",
+        "https://spectrum.ieee.org/green-software"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Architectural recommendation; can be suggested from CI/CD configs or recurring batch workflows"
+    }
+  },
+  {
+    "id": "030",
+    "title": "Choose cloud regions with cleaner energy grids",
+    "tip": "When latency, compliance, and reliability allow it, prefer deployment regions with lower electricity carbon intensity for batch and service workloads.",
+    "why": "Identical software running in different regions can have different emissions because the underlying electricity mix varies across grids.",
+    "category": "carbon-awareness",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["cloud", "regions", "carbon", "deployment", "infrastructure"],
+    "source": "Green Software Foundation - Carbon Awareness; Electricity Maps; IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "sourceLink": [
+        "https://learn.greensoftware.foundation/carbon-awareness/",
+        "https://www.electricitymaps.com/",
+        "https://spectrum.ieee.org/green-software"
+    ],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Can inspect IaC files such as Terraform or CloudFormation for hard-coded region choices"
+    }
+  },
+  {
+    "id": "031",
+    "title": "Right-size your cloud resources",
+    "tip": "Regularly review CPU and memory utilisation of cloud VMs and downsize over-provisioned instances. Under-utilised servers still consume power, so right-sizing reduces both energy use and cost.",
+    "why": "Over-provisioned cloud resources waste energy and money. The hardware is powered whether or not your code uses it. Right-sizing to actual usage is one of the most impactful cloud sustainability actions.",
+    "category": "carbon-awareness",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["cloud", "infrastructure", "vm", "right-sizing", "resources"],
+    "source": [
+	    "Green Software Foundation — Hardware Efficiency Pillar", 
+	    "IEA Data Centres Report"
+    ],
+    "sourceLink": ["https://greensoftware.foundation/articles/sustainable-systems-mastering-the-tradeoff-between-high-server-utilization-and-ha?utm_source=chatgpt.com","https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai?utm_source=chatgpt.com"], 
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Architectural/operational tip; can be surfaced in IaC or Dockerfile configs"
+    }
+  },
+  {
+    "id": "032",
+    "title": "Use serverless for spiky or infrequent workloads",
+    "tip": "For workloads with uneven traffic (e.g., background jobs, webhooks, event processing), use serverless functions (AWS Lambda, Azure Functions) that scale to zero when idle.",
+    "why": "Serverless functions inherently avoid idle resource consumption. Research shows serverless data processing leads to 32–37% reduction in total compute energy compared to always-on VMs.",
+    "category": "carbon-awareness",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["serverless", "cloud", "lambda", "scale-to-zero", "idle"],
+    "source": ["JCSRR — 'Energy-efficient Data Engineering Practices for Big Data' (2025)"],
+    "sourceLink": ["https://jcsrr.org/index.php/jcsrr/article/download/27/35/231"]
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Architectural tip; applicable when reviewing always-on service configurations"
+    }
+  },
+  {
+    "id": "033",
+    "title": "Avoid unnecessary background work on mobile",
+    "tip": "On iOS and Android, minimise background processing, location updates, and network fetches. Use background task APIs (BGTaskScheduler on iOS, WorkManager on Android) with sensible intervals and conditions.",
+    "why": "Background processes are the largest category of battery drain from apps. Every unnecessary background fetch or location poll directly reduces the device's battery life and increases charging frequency.",
+    "category": "energy",
+    "language": ["swift", "kotlin"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["mobile", "background", "battery", "ios", "android", "location"],
+    "source": [
+	    "E-SPIN Group — 'Green Coding: Writing Energy-Efficient Software' (2025)", 
+	    "Apple - Energy Efficiency Guide for iOS Apps; Android — Background Work Best Practices"
+	   ]
+    "sourceLink": [
+	    "https://www.e-spincorp.com/green-coding-energy-efficient-software/", 
+	    "https://developer.apple.com/library/archive/documentation/Performance/Conceptual/EnergyGuide-iOS/", 
+	    "https://developer.android.com/develop/background-work"
+	   ]
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "CLLocationManager continuous updates / LocationManager.requestLocationUpdates with small interval",
+      "languages": ["swift", "kotlin"]
+    }
+  },
+  {
+    "id": "034",
+    "title": "Throttle and debounce event handlers",
+    "tip": "Use debounce for inputs like search fields (fire only after user stops typing) and throttle for scroll/resize events (fire at most once per N ms). Never attach unthrottled handlers to high-frequency events.",
+    "why": "A scroll event can fire 60+ times per second. An unthrottled handler executing JavaScript on every event burns CPU cycles and drains battery unnecessarily.",
+    "category": "energy",
+    "language": ["javascript", "typescript"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["debounce", "throttle", "events", "scroll", "frontend", "cpu"],
+    "source": [
+		  "OpenReplay Blog — Handling Scroll Events Without Killing Performance (2025)",
+		  "SitePoint — Quick Tip: How to Throttle Scroll Events",
+		  "DEV Community — The Developer's Guide to Green Coding (2025)"
+		],
+		"sourceLink": [
+		  "https://blog.openreplay.com/handling-scroll-events-performance/",
+		  "https://www.sitepoint.com/throttle-scroll-events/",
+		  "https://dev.to/ben/the-developers-guide-to-green-coding-48"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "addEventListener('scroll') or addEventListener('resize') without throttle/debounce wrapper",
+      "languages": ["javascript", "typescript"]
+    }
+  },
+  {
+    "id": "035",
+    "title": "Use CSS transitions instead of JavaScript animations",
+    "tip": "Prefer CSS transitions and keyframe animations over JavaScript-driven animations (requestAnimationFrame loops, setInterval). CSS animations are handled by the browser compositor thread and can be GPU-accelerated.",
+    "why": "JavaScript animations block the main thread and prevent the browser from optimising rendering. CSS animations can run on a separate thread, allowing the main CPU to stay in a lower power state.",
+    "category": "energy",
+    "language": ["css", "javascript"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["css", "animation", "frontend", "gpu", "rendering"],
+    "source": [
+		  "web.dev — High performance animations guide",
+		  "MDN Web Docs — CSS and JavaScript animation performance"
+		],
+		"sourceLink": [
+		  "https://web.dev/animations-guide/",
+		  "https://developer.mozilla.org/en-US/docs/Web/Performance/CSS_JavaScript_animation_performance"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "setInterval or requestAnimationFrame used for visual property changes",
+      "languages": ["javascript", "typescript"]
+    }
+  },
+  {
+    "id": "036",
+    "title": "Write modular, reusable code to reduce duplication",
+    "tip": "Extract repeated logic into shared functions, modules, or services. Duplicated code means duplicated computation — two copies of the same algorithm running independently instead of one shared invocation.",
+    "why": "Code reuse reduces redundant computation, decreases maintenance surface, and ensures that a performance/energy optimisation in one place benefits all call sites.",
+    "category": "sustainability",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "medium",
+    "tags": ["reusability", "modularity", "dry", "architecture", "maintenance"],
+    "source": [
+		  "Green Software Foundation — Green Software Principles",
+		  "Martin Fowler — Don't Repeat Yourself (DRY principle)"
+		],
+		"sourceLink": [
+		  "https://principles.green/",
+		  "https://www.martinfowler.com/ieeeSoftware/repetition.pdf"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "copy-pasted code blocks; high code duplication ratio",
+      "languages": ["general"]
+    }
+  },
+  {
+    "id": "037",
+    "title": "Design APIs with backward compatibility to extend software lifespan",
+    "tip": "Build backward-compatible APIs and avoid breaking changes that force all clients to upgrade simultaneously. Use versioning and deprecation windows to extend the useful life of existing software.",
+    "why": "Software longevity is a key sustainability principle. The most sustainable software is the software that doesn't need to be rewritten. Extending software lifespan reduces the energy cost of migration, redevelopment, and hardware refresh cycles.",
+    "category": "sustainability",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "medium",
+    "tags": ["api", "versioning", "longevity", "backward-compatibility", "design"],
+    "source": ["Green Software Foundation — Hardware Efficiency"],
+    "sourceLink": [
+		  "https://principles.green/"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "High-level design tip"
+    }
+  },
+  {
+    "id": "038",
+    "title": "Prefer static sites and pre-rendered content",
+    "tip": "Where content is not user-specific or dynamic, use static site generators (Next.js SSG, Hugo, Astro) or pre-render pages at build time. Serve from a CDN rather than computing on every request.",
+    "why": "A static HTML file served from a CDN edge node requires no server CPU, no database query, and minimal bandwidth. The same content served via SSR on every request burns server energy for each visitor.",
+    "category": "energy",
+    "language": ["javascript", "html", "general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["ssg", "cdn", "ssr", "web", "architecture", "server"],
+    "source": [
+		  "E-SPIN Group — Green Coding: Writing Energy-Efficient Software",
+		  "Next.js Documentation — Static Generation (SSG)"
+		],
+		"sourceLink": [
+		  "https://www.e-spincorp.com/green-coding-energy-efficient-software/",
+		  "https://nextjs.org/docs/basic-features/pages#static-generation"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Architectural recommendation"
+    }
+  },
+  {
+    "id": "039",
+    "title": "Minimise use of heavyweight dependencies",
+    "tip": "Audit your project dependencies regularly. Remove unused packages and prefer lightweight alternatives to bloated libraries (e.g., day.js over moment.js, native fetch over axios where sufficient).",
+    "why": "Every dependency adds to bundle size, startup time, and memory footprint. Over-large dependency trees increase cold-start energy in serverless and mobile contexts.",
+    "category": "sustainability",
+    "language": ["javascript", "python", "java", "kotlin", "general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["dependencies", "bundle-size", "startup", "memory", "audit"],
+    "source": [
+		  "Web Eco‑Design Guide — DEV Community",
+		  "The Carbon Cost of JavaScript — Agnikii Digital"
+		],
+		"sourceLink": [
+		  "https://dev.to/brdnicolas/web-eco-design-reducing-environmental-impact-55c2",
+		  "https://agnikii.co.uk/insights/the-carbon-cost-of-javascript/"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "imports from known heavyweight packages with lightweight alternatives",
+      "languages": ["javascript", "typescript", "python"]
+    }
+  },
+  {
+    "id": "040",
+    "title": "Use appropriate log levels and avoid excessive logging",
+    "tip": "Set production log levels to WARN or ERROR. Avoid logging inside tight loops at DEBUG/INFO level. Excessive logging drives I/O writes, CPU serialisation overhead, and storage costs.",
+    "why": "High-frequency logging in production is a common but overlooked energy drain. Each log write is a disk or network I/O operation, and serialising structured log objects is CPU-intensive at scale.",
+    "category": "io",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["logging", "io", "production", "disk", "cpu"],
+    "source": [
+		  "Sematext — Best Logging Practices",
+		  "Tencent Cloud Techpedia — Log Levels and Performance"
+		],
+		"sourceLink": [
+		  "https://sematext.com/blog/best-logging-practices-14-dos-and-donts-for-better-logging/",
+		  "https://tencentcloud.com/techpedia/137906"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "logger.debug() / logger.info() inside a loop",
+      "languages": ["java", "kotlin", "python", "javascript"]
+    }
+  },
+  {
+    "id": "041",
+    "title": "Use efficient sorting algorithms and standard library sorts",
+    "tip": "Use your language's built-in sort (which is typically Timsort or introsort — O(n log n) worst-case) rather than implementing your own. Avoid bubble sort or insertion sort for large collections.",
+    "why": "Standard library sorts are highly optimised in native code. A naive O(n²) sort on 100,000 items does ~10 billion operations vs ~1.7 million for O(n log n). Counting sort is the most energy-efficient for bounded integers.",
+    "category": "computation",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["sorting", "algorithms", "cpu", "standard-library"],
+    "source": [
+		  "arXiv — Energy and Time Complexity for Sorting Algorithms (2023)",
+		  "Holistic Performance, Memory, and Energy Analysis of Sorting Algorithms in Python (2025)"
+		],
+		"sourceLink": [
+		  "https://arxiv.org/abs/2311.07298",
+		  "https://ace.ewapub.com/article/view/26932"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "bubble sort or naive O(n²) sort implementations",
+      "languages": ["python", "java", "kotlin", "javascript"]
+    }
+  },
+  {
+    "id": "042",
+    "title": "Profile before optimising",
+    "tip": "Use profiling tools (cProfile, JProfiler, Instruments, Chrome DevTools) to identify actual hotspots before optimising. 90% of execution time is typically in 10% of code — find that 10% first.",
+    "why": "Optimising the wrong part of the code wastes developer time and may introduce complexity with no energy benefit. Profiling ensures effort targets the highest-impact areas.",
+    "category": "energy",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["profiling", "measurement", "hotspots", "tooling", "performance"],
+    "source": [
+		  "Green Software Foundation — Green Software Principles",
+		  "Wikipedia — Program Optimization (90/10 rule)"
+		],
+		"sourceLink": [
+		  "https://greensoftware.foundation/",
+		  "https://en.wikipedia.org/wiki/Program_optimization"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Process tip; can link to profiling tool documentation"
+    }
+  },
+  {
+    "id": "043",
+    "title": "Avoid high-resolution timers and busy CPU in idle state",
+    "tip": "Do not use high-resolution timers (e.g., spinning on System.nanoTime() or Date.now()) for timing precision. Use OS sleep/wait primitives. Prevent your application from using 100% CPU when it has nothing to do.",
+    "why": "High-frequency timer polling and CPU spinning prevent processors from entering C-states (low-power sleep modes). A CPU in C0 (fully active) uses 3–10× more power than in C3 or deeper.",
+    "category": "energy",
+    "language": ["java", "kotlin", "python", "cpp", "general"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["cpu-states", "sleep", "idle", "timers", "power-management"],
+    "source": [
+		  "Avoiding busy waiting in Java — Java Code Geeks"
+		],
+		"sourceLink": [
+		  "https://www.javacodegeeks.com/avoiding-busy-waiting-in-java.html"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "while(true) with nanoTime() / Date.now() without Thread.sleep()",
+      "languages": ["java", "kotlin", "python", "javascript"]
+    }
+  },
+  {
+    "id": "044",
+    "title": "Use content delivery networks (CDNs) for static assets",
+    "tip": "Serve static files (images, JS, CSS, fonts) from a CDN rather than your origin server. CDNs serve from edge nodes geographically close to users, reducing data transfer distance and origin server load.",
+    "why": "Shorter data travel distance means lower network energy. CDN-served requests also free origin server CPU from handling static asset delivery.",
+    "category": "network",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["cdn", "network", "static-assets", "bandwidth", "latency"],
+    ""source": [
+		  "DigitalOcean — Using a CDN to Speed Up Static Content Delivery",
+		  "Whizlabs — Host and Optimize Static Website with Content Delivery Network"
+		],
+		"sourceLink": [
+		  "https://www.digitalocean.com/community/tutorials/using-a-cdn-to-speed-up-static-content-delivery",
+		  "https://www.whizlabs.com/blog/content-delivery-network/"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Architectural/deployment tip; can inspect HTML for origin-hosted static assets"
+    }
+  },
+  {
+    "id": "045",
+    "title": "Terminate idle database connections and thread pool threads",
+    "tip": "Configure connection pools and thread pools with an idle timeout so that unused resources are released rather than held indefinitely. Use min-idle settings appropriate to your actual baseline load.",
+    "why": "Idle open connections and threads still consume memory and keep the connection alive at the database server end. Over-provisioned pools waste resources at rest.",
+    "category": "memory",
+    "language": ["general"],
+    "impact": "low",
+    "effort": "low",
+    "tags": ["connection-pool", "threads", "idle", "memory", "database"],
+    "source": [
+		  "Oracle — Database Connection Pooling Best Practices",
+		  "HikariCP Documentation — Pool Sizing and Idle Timeout"
+		],
+		"sourceLinks": [
+		  "https://docs.oracle.com/cd/B19306_01/java.102/b14355/apxtips.htm",
+		  "https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Config-level tip; can inspect pool configuration files"
+    }
+  },
+  {
+    "id": "046",
+    "title": "Use lock-free data structures in concurrent code",
+    "tip": "When building concurrent systems, prefer lock-free data structures (e.g., java.util.concurrent.ConcurrentHashMap, AtomicReference, CAS-based queues) over coarse-grained locking.",
+    "why": "Lock-free data structures reduce thread contention and waiting. Less blocking means fewer wasted CPU cycles and better scalability under load.",
+    "category": "computation",
+    "language": ["java", "kotlin", "cpp", "rust"],
+    "impact": "medium",
+    "effort": "high",
+    "tags": ["concurrency", "lock-free", "atomic", "threads", "cpu"],
+    "source": [
+		  "Herlihy & Shavit — The Art of Multiprocessor Programming",
+		  "Java Platform Documentation — java.util.concurrent package"
+		],
+		"sourceLink": [
+		  "https://www.elsevier.com/books/the-art-of-multiprocessor-programming/herlihy/978-0-12-415950-1",
+		  "https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/package-summary.html"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "synchronized blocks wrapping HashMap operations",
+      "languages": ["java", "kotlin"]
+    }
+  },
+  {
+    "id": "047",
+    "title": "Compile Python-heavy compute to native extensions or use PyPy",
+    "tip": "For CPU-intensive Python code (numerical computation, data processing), use NumPy/SciPy (C extensions), Cython, or run under PyPy instead of standard CPython.",
+    "why": "CPython is an interpreted language and significantly slower than compiled code. A 2018 study across 27 languages found up to 75× energy difference between language implementations for the same problem.",
+    "category": "computation",
+    "language": ["python"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["python", "numpy", "pypy", "performance", "cpu", "native"],
+    "source": [
+		  "Pereira et al. — Energy Efficiency Across Programming Languages (SLE 2017)"
+		],
+		"sourceLink": [
+		  "https://haslab.github.io/SAFER/scp21.pdf"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "pure Python nested loops performing numerical operations",
+      "languages": ["python"]
+    }
+  },
+  {
+    "id": "048",
+    "title": "Prefer compiled or statically-typed languages for compute-critical paths",
+    "tip": "For compute-heavy workloads, consider compiled languages (C, C++, Rust, Go) or ahead-of-time compilation for better runtime efficiency.",
+    "why": "Studies comparing 27 programming languages found compiled languages such as C, C++, and Rust generally consume less energy and run faster than interpreted languages like Python or Ruby for CPU-bound workloads. Energy differences can reach orders of magnitude depending on the task.",
+    "category": "energy",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "high",
+    "tags": ["programming-language", "compiled", "rust", "c", "go", "energy"],
+    "source": [
+		  "Pereira et al. — Energy Efficiency Across Programming Languages (SLE 2017)"
+		],
+		"sourceLink": [
+		  "https://haslab.github.io/SAFER/scp21.pdf"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Architectural tip; relevant when introducing new services"
+    }
+  },
+  {
+    "id": "049",
+    "title": "Avoid N+1 query patterns in ORM usage",
+    "tip": "When using an ORM (Hibernate, SQLAlchemy, ActiveRecord), always check for N+1 query patterns. Use eager loading (JOIN FETCH, .prefetch_related(), .includes()) to load related entities in a single query.",
+    "why": "Each additional query creates extra network round-trips and database work. N+1 patterns can multiply resource usage and energy consumption at scale.",
+    "category": "database",
+    "language": ["python", "java", "kotlin", "javascript", "ruby"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["orm", "n+1", "database", "sql", "eager-loading", "query"],
+    "source": [
+		  "Hibernate Documentation — Fetching Strategies",
+		  "Django Documentation — select_related and prefetch_related"
+		],
+		"sourceLink": [
+		  "https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#fetching",
+		  "https://docs.djangoproject.com/en/stable/ref/models/querysets/#prefetch-related"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "ORM relationship access inside a loop without prefetch",
+      "languages": ["python", "java", "kotlin"]
+    }
+  },
+  {
+    "id": "050",
+    "title": "Use WebSockets or Server-Sent Events instead of polling",
+    "tip": "For real-time updates (notifications, live data), use WebSockets or Server-Sent Events instead of polling the server on a timer. Only push data when there is actually new data.",
+    "why": "Polling generates repeated HTTP requests even when no data changes. Push-based protocols like WebSockets or SSE send updates only when events occur, reducing network traffic, server work, and energy usage.",
+    "category": "network",
+    "language": ["javascript", "typescript", "general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["websockets", "sse", "polling", "real-time", "network", "http"],
+    "source": [
+		  "IETF — The WebSocket Protocol (RFC 6455)",
+		  "MDN Web Docs — Server-Sent Events"
+		],
+		"sourceLink": [
+		  "https://datatracker.ietf.org/doc/html/rfc6455",
+		  "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "setInterval with fetch() or XMLHttpRequest for data refresh",
+      "languages": ["javascript", "typescript"]
+    }
+  },
+  {
+    "id": "051",
+    "title": "Use pagination and cursor-based pagination for large lists",
+    "tip": "Never return unbounded lists from APIs or databases. Always paginate results. For large datasets, prefer cursor-based (keyset) pagination over offset-based, as offset pagination requires the database to scan and discard skipped rows.",
+    "why": "Offset pagination on large tables (OFFSET 10000 LIMIT 20) causes the database to read and discard 10,000 rows, wasting I/O and CPU energy. Cursor pagination jumps directly to the right position.",
+    "category": "database",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["pagination", "api", "database", "sql", "cursor", "performance"],
+    "source": [
+		  "Use The Index, Luke — Pagination Done the Right Way",
+		  "PostgreSQL Documentation — LIMIT and OFFSET"
+		],
+		"sourceLink": [
+		  "https://use-the-index-luke.com/sql/partial-results/fetch-next-page",
+		  "https://www.postgresql.org/docs/current/queries-limit.html"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "findAll() / SELECT without LIMIT; ORM .all() without pagination",
+      "languages": ["python", "java", "kotlin", "javascript"]
+    }
+  },
+  {
+    "id": "052",
+    "title": "Use columnar storage formats for analytical workloads",
+    "tip": "For analytics, data lakes, or reporting workloads, store data in columnar formats like Apache Parquet or ORC rather than row-based CSV or JSON. Combine with compression (Snappy, zstd).",
+    "why": "Columnar formats allow queries to read only the columns they need rather than entire rows. For a query touching 3 of 100 columns, this reduces I/O by up to 97%, with corresponding energy savings.",
+    "category": "database",
+    "language": ["python", "general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["parquet", "columnar", "analytics", "storage", "compression", "big-data"],
+    "source": [
+		  "Apache Parquet Documentation — Columnar Storage Format",
+		  "Prokhorenko & Babar — Offloaded Data Processing Energy Efficiency Evaluation (2024)"
+		],
+		"sourceLink": [
+		  "https://parquet.apache.org/docs/overview/",
+		  "https://informatica.vu.lt/journal/INFORMATICA/article/1343/read"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Can warn on pandas read_csv() for large files where Parquet would be more appropriate"
+    }
+  },
+  {
+    "id": "053",
+    "title": "Containerise and share infrastructure efficiently",
+    "tip": "Use containers (Docker, Podman, Kubernetes) to consolidate workloads and share underlying host resources. Run multiple isolated services on one physical host rather than one service per server.",
+    "why": "Physical servers consume a large fraction of their peak energy even at low utilization. Consolidating workloads via virtualization or containers increases utilization, reduces the total number of machines, and lowers overall energy use.",
+    "category": "carbon-awareness",
+    "language": ["general"],
+    "impact": "high",
+    "effort": "medium",
+    "tags": ["containers", "docker", "infrastructure", "utilisation", "cloud"],
+    "source": [
+		  "ENERGY STAR — Virtualize Servers",
+		  "Uddin & Rahman — Server Consolidation: An Approach to Make Data Centers Energy Efficient"
+		],
+		"sourceLink": [
+		  "https://www.energystar.gov/products/data_center_equipment/5-simple-ways-avoid-energy-waste-your-data-center/virtualize-servers",
+		  "https://arxiv.org/abs/1010.5037"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Infrastructure/DevOps tip"
+    }
+  },
+  {
+    "id": "054",
+    "title": "Avoid synchronous blocking I/O on async runtimes",
+    "tip": "On async runtimes (Node.js, Kotlin coroutines, Python asyncio), never call synchronous blocking I/O functions. Use their async equivalents to avoid blocking the event loop and preventing other tasks from running.",
+    "why": "Blocking the event loop in async runtimes stalls all other tasks waiting on that thread, effectively causing them to burn CPU in an idle wait state. Async I/O allows the runtime to do useful work while waiting.",
+    "category": "computation",
+    "language": ["javascript", "kotlin", "python"],
+    "impact": "high",
+    "effort": "low",
+    "tags": ["async", "io", "event-loop", "coroutines", "concurrency"],
+    "source": [
+		  "Node.js — Async Programming Best Practices"
+		],
+		"sourceLink": [
+		  "https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "fs.readFileSync() / open() inside async function; blocking DB calls in coroutines",
+      "languages": ["javascript", "kotlin", "python"]
+    }
+  },
+  {
+    "id": "055",
+    "title": "Implement exponential backoff for retries",
+    "tip": "When retrying failed network requests or operations, use exponential backoff with jitter rather than fixed-interval retries. Avoid hammering a struggling server with constant retry storms.",
+    "why": "Fixed-interval retries during outages cause 'retry storms' that amplify server load, increasing energy consumption on both client and server. Exponential backoff reduces total retry volume.",
+    "category": "network",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["retries", "backoff", "network", "resilience", "api"],
+    "source": [
+		  "AWS — Exponential Backoff and Jitter"
+		],
+		"sourceLink": [
+		  "https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "retry loops with fixed sleep() interval",
+      "languages": ["python", "java", "kotlin", "javascript"]
+    }
+  },
+  {
+    "id": "056",
+    "title": "Use read replicas to distribute database read load",
+    "tip": "For read-heavy applications, direct read queries to database read replicas. This distributes load, prevents the primary database from being a bottleneck, and allows it to enter lower CPU utilisation between writes.",
+    "why": "A single overloaded database server runs at high CPU and memory utilisation, consuming peak energy. Distributing reads reduces per-server load, allowing hardware to operate at more energy-efficient utilisation levels.",
+    "category": "database",
+    "language": ["general"],
+    "impact": "medium",
+    "effort": "medium",
+    "tags": ["database", "replicas", "read-load", "scalability", "performance"],
+    "source": [
+		  "AWS — RDS Read Replicas Best Practices"
+		],
+		"sourceLink": [
+		  "https://aws.amazon.com/rds/details/read-replicas/"
+		],
+    "future_static_analysis": {
+      "detectable": false,
+      "notes": "Architectural tip"
+    }
+  },
+  {
+    "id": "057",
+    "title": "Unsubscribe from observables and remove event listeners on teardown",
+    "tip": "In component-based frameworks (React, Angular, SwiftUI, Android), always unsubscribe from observables, cancel timers, and remove event listeners when a component is destroyed.",
+    "why": "Leaked subscriptions and listeners keep objects alive in memory, may continue triggering code, and prevent garbage collection. In mobile apps, this directly impacts battery life.",
+    "category": "memory",
+    "language": ["javascript", "typescript", "swift", "kotlin"],
+    "impact": "medium",
+    "effort": "low",
+    "tags": ["memory-leak", "subscriptions", "event-listeners", "teardown", "mobile"],
+    "source": [
+		  "Android Developers — Manage Your App's Memory",
+		  "iOS Memory Leaks Impact on Battery (Medium article)",
+		  "MDN Web Docs — removeEventListener"
+		],
+		"sourceLink": [
+		  "https://developer.android.com/topic/performance/memory",
+		  "https://medium.com/@burakekmen/memory-leaks-in-ios-the-fastest-way-to-spot-fix-them-fbef90a87edb",
+		  "https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener"
+		],
+    "future_static_analysis": {
+      "detectable": true,
+      "pattern": "addEventListener without corresponding removeEventListener in cleanup; RxJava subscriptions without dispose()",
+      "languages": ["typescript", "javascript", "kotlin", "swift"]
+    }
+  }
+]
