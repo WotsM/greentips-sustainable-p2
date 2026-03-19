@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "greentips"
-version = "0.0.2"
+version = "0.0.3"
 description = "A sustainability tip generator for developers."
 requires-python = ">=3.12"
 
@@ -15,3 +15,6 @@ dependencies = [
 
 [project.scripts]
 greentips = "greentips.main:app"
+
+[tool.setuptools.package-data]
+greentips = ["*.json"]
