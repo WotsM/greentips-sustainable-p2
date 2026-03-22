@@ -22,18 +22,6 @@ console = Console()
 def root():
     """GreenTips command group."""
 
-
-def _format_effort(effort: str) -> str:
-    effort = effort.lower()
-    if effort == "low":
-        return "Low • quick win"
-    if effort == "medium":
-        return "Medium • moderate effort"
-    if effort == "high":
-        return "High • bigger refactor"
-    return effort.title()
-
-
 def _print_tip(source_label, tip_data, details=None):
     # Header
     tip_id = tip_data.get("id", "")
@@ -48,7 +36,7 @@ def _print_tip(source_label, tip_data, details=None):
 
     body += f"💡 [bold]Tip[/bold]\n{tip_data['tip']}\n\n"
     body += f"🔍 [cyan]Why[/cyan]\n{tip_data['why']}\n\n"
-    body += f"⚡ [yellow]Effort[/yellow]\n{_format_effort(tip_data['effort'])}\n\n"
+    body += f"⚡ [yellow]Effort[/yellow]\n{str.capitalize(tip_data['effort'])}\n\n"
     body += "[dim]Tip of the day • Run again tomorrow for a new suggestion[/dim]"
 
     console.print(
