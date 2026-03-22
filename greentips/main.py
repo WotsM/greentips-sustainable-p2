@@ -22,9 +22,8 @@ console = Console()
 def root():
     """GreenTips command group."""
 
-def _print_tip(source_label, tip_data, details=None):
+def _print_tip(source_label, tip_data, details=None, is_general=False):
     # Header
-    tip_id = tip_data.get("id", "")
     title = f"[bold green]🌱 GreenTip • {source_label}"
     title += "[/bold green]"
 
@@ -37,7 +36,9 @@ def _print_tip(source_label, tip_data, details=None):
     body += f"💡 [bold]Tip[/bold]\n{tip_data['tip']}\n\n"
     body += f"🔍 [cyan]Why[/cyan]\n{tip_data['why']}\n\n"
     body += f"⚡ [yellow]Effort[/yellow]\n{str.capitalize(tip_data['effort'])}\n\n"
-    body += "[dim]Tip of the day • Run again tomorrow for a new suggestion[/dim]"
+
+    if is_general:
+        body += "[dim]Tip of the day • Run again tomorrow for a new suggestion[/dim]"
 
     console.print(
         Panel(
@@ -79,15 +80,14 @@ def tip(
             language_tip = pick_language_tip(tips, majority_language)
             if language_tip:
                 details = f"Majority language detected: {majority_language}"
-                title = f"{majority_language} Language Tip"
-                _print_tip(title, language_tip, details)
+                _print_tip(f"{majority_language} Language Tip", language_tip, details)
                 return
 
         general_tip = pick_general_tip(tips)
         if general_tip is None:
             console.print("[bold red]❌ Error:[/bold red] No general tips available in tips database.")
             raise typer.Exit(code=1)
-        _print_tip("General Tip", general_tip, "No language tip matched for current directory.")
+        _print_tip("General Tip", general_tip, "No language tip matched for current directory.", True)
         return
 
     # Mode 2: Path specified, full hierarchy
@@ -110,7 +110,7 @@ def tip(
         language_tip = pick_language_tip(tips, majority_language)
         if language_tip:
             details = f"Majority language detected: {majority_language}"
-            _print_tip("Majority Language", language_tip, details)
+            _print_tip(f"{majority_language} Language Tip", language_tip, details)
             return
 
     general_tip = pick_general_tip(tips)
@@ -118,7 +118,7 @@ def tip(
         console.print("[bold red]❌ Error:[/bold red] No general tips available in tips database.")
         raise typer.Exit(code=1)
 
-    _print_tip("General Tip", general_tip, "No specific/static or language tip matched.")
+    _print_tip("General Tip", general_tip, "No specific/static or language tip matched.", True)
 
 
 if __name__ == "__main__":
