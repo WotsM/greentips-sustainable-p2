@@ -35,10 +35,10 @@ def _print_tip(source_label, tip_data, details=None, is_general=False):
 
     body += f"💡 [bold]Tip[/bold]\n{tip_data['tip']}\n\n"
     body += f"🔍 [cyan]Why[/cyan]\n{tip_data['why']}\n\n"
-    body += f"⚡ [yellow]Effort[/yellow]\n{str.capitalize(tip_data['effort'])}\n\n"
+    body += f"⚡ [yellow]Effort[/yellow]\n{str.capitalize(tip_data['effort'])}"
 
     if is_general:
-        body += "[dim]Tip of the day • Run again tomorrow for a new suggestion[/dim]"
+        body += "\n\n[dim]Tip of the day • Run again tomorrow for a new suggestion[/dim]"
 
     console.print(
         Panel(
