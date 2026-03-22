@@ -40,6 +40,15 @@ def _print_tip(source_label, tip_data, details=None, is_general=False):
     if is_general:
         body += "\n\n[dim]Tip of the day • Run again tomorrow for a new suggestion[/dim]"
 
+    # Sources
+    sources = tip_data.get("source")
+    links = tip_data.get("sourceLink")
+    if sources and links:
+        body += "\n\n📚 [magenta]Sources[/magenta]\n"
+        for name, link in zip(sources, links):
+            # render the source name as clickable
+            body += f"• [link={link}]{name}[/link]\n"
+
     console.print(
         Panel(
             body,

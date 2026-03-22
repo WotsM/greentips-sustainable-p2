@@ -9,7 +9,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["algorithms", "complexity", "cpu", "performance"],
-    "source": "Green Software Foundation - Energy Efficiency; IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "source": ["Green Software Foundation - Energy Efficiency", "IEEE Spectrum - What Is Green Software and Why Do We Need It?"],
     "sourceLink": [
       "https://learn.greensoftware.foundation/energy-efficiency/",
       "https://spectrum.ieee.org/green-software"
@@ -30,7 +30,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["lazy", "generators", "sequences", "memory", "cpu"],
-    "source": "Green Software Foundation - Energy Efficiency; Roskilde University - Energy-Aware Software Engineering",
+    "source": ["Green Software Foundation - Energy Efficiency", "Roskilde University - Energy-Aware Software Engineering"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/",
         "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
@@ -51,7 +51,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["data-structures", "collections", "cpu", "memory"],
-    "source": "Michanan et al. - Predicting Data Structures for Energy Efficient Computing, IEEE IGSC 2015",
+    "source": ["Michanan et al. - Predicting Data Structures for Energy Efficient Computing, IEEE IGSC 2015"],
     "sourceLink": [
         "https://cs.du.edu/~rdewri/data/MyPapers/Conferences/2015IGSC.pdf"
     ],
@@ -71,7 +71,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["cache", "memory-hierarchy", "data-locality", "cpu"],
-    "source": "Roskilde University - Energy-Aware Software Engineering",
+    "source": ["Roskilde University - Energy-Aware Software Engineering"],
     "sourceLink": [
         "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
     ],
@@ -90,7 +90,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["memoization", "caching", "redundancy", "cpu"],
-    "source": "Green Software Foundation - Energy Efficiency; IEEE Computer Society - The Environmental Cost of Code",
+    "source": ["Green Software Foundation - Energy Efficiency", "IEEE Computer Society - The Environmental Cost of Code"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/",
         "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
@@ -111,7 +111,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["polling", "event-driven", "cpu-idle", "sleep-states", "async"],
-    "source": "Green Software Foundation - Energy Efficiency; Roskilde University - Energy-Aware Software Engineering",
+    "source": ["Green Software Foundation - Energy Efficiency", "Roskilde University - Energy-Aware Software Engineering"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/",
         "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
@@ -132,7 +132,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["io", "disk", "batching", "writes", "buffering"],
-    "source": "Roskilde University - Energy-Aware Software Engineering; Green Software Foundation - Energy Efficiency",
+    "source": ["Roskilde University - Energy-Aware Software Engineering", "Green Software Foundation - Energy Efficiency"],
     "sourceLink": [
         "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf",
         "https://learn.greensoftware.foundation/energy-efficiency/"
@@ -153,7 +153,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["compression", "network", "io", "storage", "bandwidth"],
-    "source": "Green Software Foundation - Energy Efficiency; IEEE Computer Society - The Environmental Cost of Code",
+    "source": ["Green Software Foundation - Energy Efficiency", "IEEE Computer Society - The Environmental Cost of Code"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/",
         "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
@@ -174,7 +174,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["network", "http", "api", "round-trips", "batching", "graphql"],
-    "source": "Green Software Foundation - Energy Efficiency",
+    "source": ["Green Software Foundation - Energy Efficiency"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/"
     ],
@@ -194,7 +194,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["database", "sql", "query-optimization", "network", "memory"],
-    "source": "Green Software Foundation - Energy Efficiency",
+    "source": ["Green Software Foundation - Energy Efficiency"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/"
     ],
@@ -214,7 +214,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["caching", "redis", "database", "network", "response-time"],
-    "source": "Green Software Foundation - Energy Efficiency; IEEE Computer Society - The Environmental Cost of Code",
+    "source": ["Green Software Foundation - Energy Efficiency", "IEEE Computer Society - The Environmental Cost of Code"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/",
         "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
@@ -234,7 +234,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["connection-pooling", "database", "http", "network", "tcp"],
-    "source": "Green Software Foundation - Energy Efficiency; IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "source": ["Green Software Foundation - Energy Efficiency", "IEEE Spectrum - What Is Green Software and Why Do We Need It?"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/",
         "https://spectrum.ieee.org/green-software"
@@ -255,7 +255,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["memory", "resource-management", "gc", "file-handles", "leaks"],
-    "source": "Green Software Foundation - Energy Efficiency; Roskilde University - Energy-Aware Software Engineering",
+    "source": ["Green Software Foundation - Energy Efficiency", "Roskilde University - Energy-Aware Software Engineering"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/energy-efficiency/",
         "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
@@ -276,7 +276,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["boxing", "primitives", "jvm", "memory", "gc", "numpy"],
-    "source": "Kotlin Documentation - Arrays; Kotlin Documentation - Calling Java from Kotlin",
+    "source": ["Kotlin Documentation - Arrays", "Kotlin Documentation - Calling Java from Kotlin"],
     "sourceLink": [
         "https://kotlinlang.org/docs/arrays.html",
         "https://kotlinlang.org/docs/java-interop.html"
@@ -297,7 +297,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["gc", "allocation", "hot-path", "object-pooling", "performance"],
-    "source": "IEEE Computer Society - The Environmental Cost of Code; Green Software Foundation - Energy Efficiency",
+    "source": ["IEEE Computer Society - The Environmental Cost of Code", "Green Software Foundation - Energy Efficiency"],
     "sourceLink": [
         "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code",
         "https://learn.greensoftware.foundation/energy-efficiency/"
@@ -318,7 +318,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["string", "loop", "allocation", "gc", "performance"],
-    "source": "Oracle Java Programming Guidelines - Use StringBuilder to Concatenate Strings; Oracle Java String API",
+    "source": ["Oracle Java Programming Guidelines - Use StringBuilder to Concatenate Strings", "Oracle Java String API"],
     "sourceLink": [
         "https://docs.oracle.com/cd/E18930_01/html/821-2431/abebf.html",
         "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html"
@@ -339,7 +339,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["parallelism", "concurrency", "threads", "coroutines", "cpu"],
-    "source": "Roskilde University - Energy-Aware Software Engineering",
+    "source": ["Roskilde University - Energy-Aware Software Engineering"],
     "sourceLink": [
         "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
     ],
@@ -358,7 +358,7 @@
     "impact": "medium",
     "effort": "high",
     "tags": ["concurrency", "parallelism", "reads", "writes", "synchronization"],
-    "source": "Roy et al. - Energy Aware Algorithmic Engineering, University at Buffalo",
+    "source": ["Roy et al. - Energy Aware Algorithmic Engineering, University at Buffalo"],
     "sourceLink": [
         "https://cse.buffalo.edu/faculty/atri/papers/complexity/energy-engg.pdf"
     ],
@@ -377,7 +377,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["database", "indexing", "sql", "query", "performance"],
-    "source": "IEEE Computer Society - The Environmental Cost of Code; Green Software Foundation - Energy Efficiency",
+    "source": ["IEEE Computer Society - The Environmental Cost of Code", "Green Software Foundation - Energy Efficiency"],
     "sourceLink": [
         "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code",
         "https://learn.greensoftware.foundation/energy-efficiency/"
@@ -397,7 +397,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["streaming", "memory", "file-io", "large-files"],
-    "source": "Roskilde University - Energy-Aware Software Engineering",
+    "source": ["Roskilde University - Energy-Aware Software Engineering"],
     "sourceLink": [
         "https://rucforsk.ruc.dk/ws/portalfiles/portal/59379759/53164.pdf"
     ],
@@ -417,7 +417,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["logging", "io", "hot-path", "performance", "observability"],
-    "source": "Oracle Java Server Page and Servlet Tuning - Avoid System.out.println() calls; IEEE Computer Society - The Environmental Cost of Code",
+    "source": ["Oracle Java Server Page and Servlet Tuning - Avoid System.out.println() calls", "IEEE Computer Society - The Environmental Cost of Code"],
     "sourceLink": [
         "https://docs.oracle.com/cd/E18930_01/html/821-2431/abebp.html",
         "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
@@ -438,7 +438,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["javascript", "bundle-size", "tree-shaking", "frontend", "parsing"],
-    "source": "IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "source": ["IEEE Spectrum - What Is Green Software and Why Do We Need It?"],
     "sourceLink": [
         "https://spectrum.ieee.org/green-software"
     ],
@@ -458,7 +458,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["images", "webp", "avif", "web", "bandwidth", "frontend"],
-    "source": "IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "source": ["IEEE Spectrum - What Is Green Software and Why Do We Need It?"],
     "sourceLink": [
         "https://spectrum.ieee.org/green-software"
     ],
@@ -478,7 +478,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["lazy-loading", "images", "animations", "viewport", "frontend", "bandwidth"],
-    "source": "MDN Web Docs - Lazy loading; web.dev - Browser-level image lazy loading for the web",
+    "source": ["MDN Web Docs - Lazy loading", "web.dev - Browser-level image lazy loading for the web"],
     "sourceLink": [
         "https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/Lazy_loading",
         "https://web.dev/browser-level-image-lazy-loading/"
@@ -499,7 +499,7 @@
     "impact": "medium",
     "effort": "low",
     "tags": ["dark-mode", "oled", "display", "mobile", "ui", "color"],
-    "source": "Google Android Developers - Optimize watch faces (dark colors draw less power)",
+    "source": ["Google Android Developers - Optimize watch faces (dark colors draw less power)"],
     "sourceLink": [
         "https://developer.android.com/training/wearables/watch-faces/performance"
     ],
@@ -519,7 +519,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["video", "autoplay", "animation", "frontend", "media", "accessibility"],
-    "source": "IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "source": ["IEEE Spectrum - What Is Green Software and Why Do We Need It?"],
     "sourceLink": [
         "https://spectrum.ieee.org/green-software"
     ],
@@ -539,7 +539,7 @@
     "impact": "medium",
     "effort": "medium",
     "tags": ["serialization", "protobuf", "json", "api", "bandwidth", "cpu"],
-    "source": "IEEE Computer Society - The Environmental Cost of Code",
+    "source": ["IEEE Computer Society - The Environmental Cost of Code"],
     "sourceLink": [
         "https://www.computer.org/publications/tech-news/trends/environmental-cost-of-code"
     ],
@@ -558,7 +558,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["http", "caching", "cdn", "headers", "api", "bandwidth"],
-    "source": "RFC 9111 - HTTP Caching",
+    "source": ["RFC 9111 - HTTP Caching"],
     "sourceLink": [
         "https://datatracker.ietf.org/doc/rfc9111/"
     ],
@@ -577,7 +577,7 @@
     "impact": "high",
     "effort": "medium",
     "tags": ["carbon-aware", "scheduling", "ci-cd", "cloud", "renewable-energy"],
-    "source": "Green Software Foundation - Carbon Awareness; Carbon Aware SDK Documentation; IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "source": ["Green Software Foundation - Carbon Awareness", "Carbon Aware SDK Documentation", "IEEE Spectrum - What Is Green Software and Why Do We Need It?"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/carbon-awareness/",
         "https://carbon-aware-sdk.greensoftware.foundation/docs/overview/",
@@ -598,7 +598,7 @@
     "impact": "high",
     "effort": "low",
     "tags": ["cloud", "regions", "carbon", "deployment", "infrastructure"],
-    "source": "Green Software Foundation - Carbon Awareness; Electricity Maps; IEEE Spectrum - What Is Green Software and Why Do We Need It?",
+    "source": ["Green Software Foundation - Carbon Awareness", "Electricity Maps", "IEEE Spectrum - What Is Green Software and Why Do We Need It?"],
     "sourceLink": [
         "https://learn.greensoftware.foundation/carbon-awareness/",
         "https://www.electricitymaps.com/",
