@@ -7,7 +7,15 @@ from greentips.analyzers import analyze_python_target
 from greentips.language_detection import detect_majority_language
 from greentips.tips import load_tips, pick_general_tip, pick_language_tip
 
-app = typer.Typer(help="GreenTips CLI")
+from rich.console import Console
+from rich.panel import Panel
+from rich.text import Text
+
+app = typer.Typer(
+    help="🌱 Get sustainability tips for your codebase"
+)
+
+console = Console()
 
 
 @app.callback()
@@ -15,13 +23,46 @@ def root():
     """GreenTips command group."""
 
 
+def _format_effort(effort: str) -> str:
+    effort = effort.lower()
+    if effort == "low":
+        return "Low • quick win"
+    if effort == "medium":
+        return "Medium • moderate effort"
+    if effort == "high":
+        return "High • bigger refactor"
+    return effort.title()
+
+
 def _print_tip(source_label, tip_data, details=None):
-    typer.echo(f"GreenTips ({source_label}):")
+    # Header
+    tip_id = tip_data.get("id", "")
+    title = f"[bold green]🌱 GreenTip • {source_label}"
+    if tip_id:
+        title += f" • {tip_id}"
+    title += "[/bold green]"
+
+    # Body
+    body = ""
+
     if details:
-        typer.echo(details)
-    typer.echo(f"\n{tip_data['tip']}")
-    typer.echo(f"Why? {tip_data['why']}")
-    typer.echo(f"Effort: {tip_data['effort'].title()}")
+        body += f"[dim]{details}[/dim]\n\n"
+
+    body += f"💡 [bold]Tip[/bold]\n{tip_data['tip']}\n\n"
+    body += f"🔍 [cyan]Why[/cyan]\n{tip_data['why']}\n\n"
+    body += f"⚡ [yellow]Effort[/yellow]\n{_format_effort(tip_data['effort'])}\n\n"
+    body += "[dim]Tip of the day • Run again tomorrow for a new suggestion[/dim]"
+
+    console.print(
+        Panel(
+            body,
+            title=title,
+            border_style="green",
+            padding=(1, 2),
+            width=80,
+        )
+    )
+
 
 
 @app.command()
@@ -42,7 +83,7 @@ def tip(
     try:
         tips = load_tips()
     except FileNotFoundError:
-        typer.echo("Error: Could not find 'tips.json'.")
+        console.print("[bold red]❌ Error:[/bold red] Could not find 'tips.json'.")
         raise typer.Exit(code=1)
 
     # Mode 1: No path specified, language + general only
@@ -52,19 +93,20 @@ def tip(
             language_tip = pick_language_tip(tips, majority_language)
             if language_tip:
                 details = f"Majority language detected: {majority_language}"
-                _print_tip("Majority Language", language_tip, details)
+                title = f"{majority_language} Language Tip"
+                _print_tip(title, language_tip, details)
                 return
 
         general_tip = pick_general_tip(tips)
         if general_tip is None:
-            typer.echo("Error: No general tips available in tips database.")
+            console.print("[bold red]❌ Error:[/bold red] No general tips available in tips database.")
             raise typer.Exit(code=1)
-        _print_tip("General", general_tip, "No language tip matched for current directory.")
+        _print_tip("General Tip", general_tip, "No language tip matched for current directory.")
         return
 
     # Mode 2: Path specified, full hierarchy
     if not target.exists():
-        typer.echo(f"Error: Path '{target}' does not exist.")
+        console.print(f"[bold red]❌ Error:[/bold red] Path '{target}' does not exist.")
         raise typer.Exit(code=1)
 
     static_result = analyze_python_target(target, tips)
@@ -74,7 +116,7 @@ def tip(
             f"Matched in {static_result['file'].name} at line {static_result['line']} "
             f"(Tip {tip_data['id']}: {tip_data['title']})"
         )
-        _print_tip("Specific Analysis", tip_data, details)
+        _print_tip("Specific Analysis Tip", tip_data, details)
         return
 
     majority_language = detect_majority_language(target)
@@ -87,10 +129,10 @@ def tip(
 
     general_tip = pick_general_tip(tips)
     if general_tip is None:
-        typer.echo("Error: No general tips available in tips database.")
+        console.print("[bold red]❌ Error:[/bold red] No general tips available in tips database.")
         raise typer.Exit(code=1)
 
-    _print_tip("General", general_tip, "No specific/static or language tip matched.")
+    _print_tip("General Tip", general_tip, "No specific/static or language tip matched.")
 
 
 if __name__ == "__main__":
