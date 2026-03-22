@@ -38,8 +38,6 @@ def _print_tip(source_label, tip_data, details=None):
     # Header
     tip_id = tip_data.get("id", "")
     title = f"[bold green]🌱 GreenTip • {source_label}"
-    if tip_id:
-        title += f" • {tip_id}"
     title += "[/bold green]"
 
     # Body
