@@ -40,3 +40,5 @@ greentips tip                  # Language tip from current directory, then gener
 greentips tip ./src            # Analyze ./src folder
 greentips tip ./app.py         # Analyze specific file
 ```
+
+If you'd like to contribute, see [CONTRIBUTING.MD](./CONTRIBUTING.MD).
