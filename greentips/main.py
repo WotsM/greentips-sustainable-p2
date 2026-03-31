@@ -17,7 +17,7 @@ app = typer.Typer(
 
 console = Console()
 
-
+# this is an example change only for hte video
 @app.callback()
 def root():
     """GreenTips command group."""
