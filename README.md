@@ -5,14 +5,14 @@ GreenTips is a Command Line Interface (CLI) tool that enables developers to expl
 
 GreenTips returns exactly one tip with two possible hierarchies:
 
-**No path provided** (quick daily tip):
+**No path provided** (quick random tip):
 1. Majority-language tip (detected from current directory)
-2. General tip of the day
+2. Random general tip
 
 **Path provided** (full analysis):
 1. Specific analysis tip (currently Python rules)
 2. Majority-language tip (based on file extensions in the target path)
-3. General tip of the day
+3. Random general tip
 
 ## Installation
 

@@ -1,4 +1,3 @@
-import datetime
 import json
 import random
 from importlib import resources
@@ -10,19 +9,17 @@ def load_tips():
         return json.load(file)
 
 
-def _pick_tip(candidates, seed_scope):
+def _pick_tip(candidates):
     if not candidates:
         return None
-    today = datetime.date.today().isoformat()
-    random_generator = random.Random(f"{today}:{seed_scope}")
-    return random_generator.choice(candidates)
+    return random.choice(candidates)
 
 
 def pick_language_tip(tips, language):
     candidates = [tip for tip in tips if language in tip.get("language", [])]
-    return _pick_tip(candidates, f"lang:{language}")
+    return _pick_tip(candidates)
 
 
 def pick_general_tip(tips):
     candidates = [tip for tip in tips if "general" in tip.get("language", [])]
-    return _pick_tip(candidates, "general")
+    return _pick_tip(candidates)

@@ -38,7 +38,7 @@ def _print_tip(source_label, tip_data, details=None, is_general=False):
     body += f"⚡ [yellow]Effort[/yellow]\n{str.capitalize(tip_data['effort'])}"
 
     if is_general:
-        body += "\n\n[dim]Tip of the day • Run again tomorrow for a new suggestion[/dim]"
+        body += "\n\n[dim]Random suggestion • Run again for another tip[/dim]"
 
     # Sources
     sources = tip_data.get("source")
@@ -69,12 +69,12 @@ def tip(
 
     If no path provided:
     1) majority language tip (current directory)
-    2) general tip of the day
+    2) general tip
 
     If path provided:
     1) specific static analysis tip (currently Python rules)
     2) majority language tip
-    3) general tip of the day
+    3) general tip
     """
     try:
         tips = load_tips()
